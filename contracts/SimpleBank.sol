@@ -4,15 +4,35 @@ contract SimpleBank {
   mapping (address => uint) private balances;
 
   address public owner;
+  /* address[] public customers; */
+
+    /* struct Donater {
+    uint256 amountDonated;
+    uint256 numberSelected;
+    address charity;
+  }
+
+  mapping(address => Donater) public donaterInfo; */
 
   event LogDepositMade(address accountAddress, uint amount);
 
-  function SimpleBank() {
+  constructor() {
     owner = msg.sender;
   }
 
+  /* function checkDonaterExists(address donater) public constant returns(bool) {
+    for(uint256 i = 0; i < donaters.length; i++){
+      if(donaters[i] == donater) return true;
+    }
+
+    return false;
+  } */
+
   function enroll() public returns (uint) {
-    balances[msg.sender] += 1000;
+    deposit = web3.toBigNumber(1000);
+    balances[msg.sender] += deposit;
+
+    /* customers.push(msg.sender); */
 
     return balances[msg.sender];
   }
