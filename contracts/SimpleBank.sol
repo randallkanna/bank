@@ -47,6 +47,8 @@ contract SimpleBank {
   function withdraw(uint withdrawAmount) public returns (uint remainingBal) {
     require(withdrawAmount <= balances[msg.sender]);
 
+    balances[msg.sender] -= withdrawAmount;
+
     msg.sender.transfer(withdrawAmount);
 
     return balances[msg.sender];

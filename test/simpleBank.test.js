@@ -23,9 +23,6 @@ contract('SimpleBank', function(accounts) {
     const bobBalance = await bank.balance({from: bob});
     assert.equal(bobBalance, 1000, 'enroll balance is incorrect, check balance method or constructor');
 
-    console.log('this is aliceBalance: ' + aliceBalance);
-    console.log('this is bobs Balance: ' + bobBalance);
-
     const ownerBalance = await bank.balance({from: owner});
     assert.equal(ownerBalance, 0, 'only enrolled users should have balance, check balance method or constructor')
   });
@@ -38,9 +35,7 @@ contract('SimpleBank', function(accounts) {
 
     await bank.deposit({from: alice, value: deposit});
     const balance = await bank.balance({from: alice});
-    console.log('this is alices balance: ' + balance)
 
-    console.log('this is the expected amount: ' + deposit.plus(1000))  // .toString()
     assert.equal(deposit.plus(1000).toString(), balance, 'deposit amount incorrect, check deposit method');
 
     const expectedEventResult = {accountAddress: alice, amount: deposit};
@@ -58,7 +53,6 @@ contract('SimpleBank', function(accounts) {
   });
 
   it("should withdraw correct amount", async () => {
-    const bank = await SimpleBank.deployed();
     const deposit = web3.toBigNumber(2);
     const initialAmount = 1000;
 
@@ -73,14 +67,13 @@ contract('SimpleBank', function(accounts) {
     assert.equal(initialAmount.toString(), balance, 'withdraw amount incorrect, check withdraw method');
   });
 
-
-    // it("should not let the same user enroll twice", async () => {
-    //   try {
-    //     await contract.enroll({from: alice});
-    //     await contract.enroll({from: alice});
-    //     assert.ok(false, 'should throw an error when the same user tries to enroll twice')
-    //   } catch(error) {
-    //     assert.ok(true, 'expected throw')
-    //   }
-    // });
+  // it("should not let the same user enroll twice", async () => {
+  //   try {
+  //     await contract.enroll({from: alice});
+  //     await contract.enroll({from: alice});
+  //     assert.ok(false, 'should throw an error when the same user tries to enroll twice')
+  //   } catch(error) {
+  //     assert.ok(true, 'expected throw')
+  //   }
+  // });
 });
