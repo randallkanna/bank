@@ -29,8 +29,7 @@ contract SimpleBank {
   } */
 
   function enroll() public returns (uint) {
-    deposit = web3.toBigNumber(1000);
-    balances[msg.sender] += deposit;
+    balances[msg.sender] += 1000;
 
     /* customers.push(msg.sender); */
 
@@ -45,16 +44,12 @@ contract SimpleBank {
     return balances[msg.sender];
   }
 
-  /// @notice Withdraw ether from bank
-  /// @dev This does not return any excess ether sent to it
-  /// @param withdrawAmount amount you want to withdraw
-  /// @return The balance remaining for the user
   function withdraw(uint withdrawAmount) public returns (uint remainingBal) {
-      /* If the sender's balance is at least the amount they want to withdraw,
-         Subtract the amount from the sender's balance, and try to send that amount of ether
-         to the user attempting to withdraw. IF the send fails, add the amount back to the user's balance
-         return the user's balance.*/
+    require(withdrawAmount <= balances[msg.sender]);
 
+    msg.sender.transfer(withdrawAmount);
+
+    return balances[msg.sender];
   }
 
   function balance() public constant returns (uint) {
