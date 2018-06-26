@@ -6,9 +6,14 @@ contract('SimpleBank', function(accounts) {
   const alice = accounts[1];
   const bob = accounts[2];
 
-  it("should put 1000 tokens in the first and second account", async () => {
-    const bank = await SimpleBank.deployed();
+  beforeEach(function() {
+    return SimpleBank.new()
+    .then(function(instance) {
+      bank = instance;
+    });
+  });
 
+  it("should put 1000 tokens in the first and second account", async () => {
     await bank.enroll({from: alice});
     await bank.enroll({from: bob});
 
@@ -18,12 +23,14 @@ contract('SimpleBank', function(accounts) {
     const bobBalance = await bank.balance({from: bob});
     assert.equal(bobBalance, 1000, 'enroll balance is incorrect, check balance method or constructor');
 
+    console.log('this is aliceBalance: ' + aliceBalance);
+    console.log('this is bobs Balance: ' + bobBalance);
+
     const ownerBalance = await bank.balance({from: owner});
     assert.equal(ownerBalance, 0, 'only enrolled users should have balance, check balance method or constructor')
   });
 
   it("should deposit correct amount", async () => {
-    const bank = await SimpleBank.deployed();
     const deposit = web3.toBigNumber(2);
 
     await bank.enroll({from: alice});
@@ -63,12 +70,17 @@ contract('SimpleBank', function(accounts) {
 
     const balance = await bank.balance({from: alice});
 
-    // console.log('this is the initial amount')
-    // console.log(initialAmount);
-    //
-    // console.log('this is the balance: ')
-    // console.log(balance);
-
     assert.equal(initialAmount.toString(), balance, 'withdraw amount incorrect, check withdraw method');
   });
+
+
+    // it("should not let the same user enroll twice", async () => {
+    //   try {
+    //     await contract.enroll({from: alice});
+    //     await contract.enroll({from: alice});
+    //     assert.ok(false, 'should throw an error when the same user tries to enroll twice')
+    //   } catch(error) {
+    //     assert.ok(true, 'expected throw')
+    //   }
+    // });
 });
