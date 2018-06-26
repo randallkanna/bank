@@ -63,8 +63,6 @@ contract('SimpleBank', function(accounts) {
     await bank.withdraw(deposit, {from: alice});
 
     const balance = await bank.balance({from: alice});
-    console.log('balance: ' + balance)
-    console.log('initialamount: ' + initialAmount.toString())
 
     assert.equal(initialAmount.toString(), balance, 'withdraw amount incorrect, check withdraw method');
   });
