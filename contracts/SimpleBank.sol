@@ -11,16 +11,13 @@ contract SimpleBank {
     owner = msg.sender;
   }
 
-  function enroll() public returns (uint){
-    uint amountToSend = 1000;
-
-    balances[msg.sender] += amountToSend;
+  function enroll() public returns (uint) {
+    balances[msg.sender] += 1000;
 
     return balances[msg.sender];
   }
 
   function deposit() public payable returns (uint) {
-      /* msg.sender.transfer(msg.value); */
     balances[msg.sender] += msg.value;
 
     emit LogDepositMade(msg.sender, msg.value);
@@ -28,12 +25,16 @@ contract SimpleBank {
     return balances[msg.sender];
   }
 
-  function withdraw(uint withdrawAmount) public returns (uint remainingBalance) {
-    require(balances[msg.sender] >= withdrawAmount);
+  /// @notice Withdraw ether from bank
+  /// @dev This does not return any excess ether sent to it
+  /// @param withdrawAmount amount you want to withdraw
+  /// @return The balance remaining for the user
+  function withdraw(uint withdrawAmount) public returns (uint remainingBal) {
+      /* If the sender's balance is at least the amount they want to withdraw,
+         Subtract the amount from the sender's balance, and try to send that amount of ether
+         to the user attempting to withdraw. IF the send fails, add the amount back to the user's balance
+         return the user's balance.*/
 
-    balances[msg.sender] += withdrawAmount;
-
-    return balances[msg.sender];
   }
 
   function balance() public constant returns (uint) {
