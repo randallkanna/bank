@@ -67,13 +67,13 @@ contract('SimpleBank', function(accounts) {
     assert.equal(initialAmount.toString(), balance, 'withdraw amount incorrect, check withdraw method');
   });
 
-  // it("should not let the same user enroll twice", async () => {
-  //   try {
-  //     await contract.enroll({from: alice});
-  //     await contract.enroll({from: alice});
-  //     assert.ok(false, 'should throw an error when the same user tries to enroll twice')
-  //   } catch(error) {
-  //     assert.ok(true, 'expected throw')
-  //   }
-  // });
+  it("should not let the same user enroll twice", async () => {
+    try {
+      await contract.enroll({from: alice});
+      await contract.enroll({from: alice});
+      assert.ok(false, 'should throw an error when the same user tries to enroll twice')
+    } catch(error) {
+      assert.ok(true, 'expected throw')
+    }
+  });
 });

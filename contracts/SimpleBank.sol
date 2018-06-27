@@ -4,15 +4,13 @@ contract SimpleBank {
   mapping (address => uint) private balances;
 
   address public owner;
-  /* address[] public customers; */
+  address[] public customers;
 
-    /* struct Donater {
-    uint256 amountDonated;
-    uint256 numberSelected;
-    address charity;
+  struct Customer {
+    address user;
   }
 
-  mapping(address => Donater) public donaterInfo; */
+  mapping(address => Customer) public customerInfo;
 
   event LogDepositMade(address accountAddress, uint amount);
 
@@ -20,18 +18,20 @@ contract SimpleBank {
     owner = msg.sender;
   }
 
-  /* function checkDonaterExists(address donater) public constant returns(bool) {
-    for(uint256 i = 0; i < donaters.length; i++){
-      if(donaters[i] == donater) return true;
+  function checkCustomerIsNotEnrolled(address customer) public constant returns(bool) {
+    for(uint256 i = 0; i < customers.length; i++) {
+      if(customers[i] == customer) return true;
     }
 
     return false;
-  } */
+  }
 
   function enroll() public returns (uint) {
+    require(!checkCustomerIsNotEnrolled(msg.sender));
+
     balances[msg.sender] += 1000;
 
-    /* customers.push(msg.sender); */
+    customers.push(msg.sender);
 
     return balances[msg.sender];
   }
