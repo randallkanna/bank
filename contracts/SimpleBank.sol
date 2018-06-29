@@ -5,12 +5,11 @@ contract SimpleBank {
 
   address public owner;
   address[] public customers;
+  mapping(address => bool) isACustomer;
 
   struct Customer {
     address user;
   }
-
-  mapping(address => Customer) public customerInfo;
 
   event LogDepositMade(address accountAddress, uint amount);
 
@@ -19,11 +18,7 @@ contract SimpleBank {
   }
 
   function checkCustomerIsNotEnrolled(address customer) public constant returns(bool) {
-    for(uint256 i = 0; i < customers.length; i++) {
-      if(customers[i] == customer) return true;
-    }
-
-    return false;
+    return isACustomer[customer];
   }
 
   function enroll() public returns (uint) {
